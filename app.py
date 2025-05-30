@@ -60,5 +60,8 @@ def draw():
         return "无效或重复的密钥。"
     return render_template("draw.html")
 
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 10000))  # Render 会自动设置 PORT 环境变量
+    app.run(host='0.0.0.0', port=port)
