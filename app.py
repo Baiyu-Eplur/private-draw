@@ -59,6 +59,33 @@ def draw():
                 return render_template("result.html", number=number)
         return "无效或重复的密钥。"
     return render_template("draw.html")
+@app.route("/participate", methods=["GET", "POST"])
+def participate():
+    if request.method == "POST":
+        session_id = request.form["session_id"].strip()
+        token = request.form["token"].strip().upper()
+        data = load_data()
+
+        if session_id not in data:
+            return "无效的 Session ID。"
+
+        session = data[session_id]
+        if token not in session["tokens"]:
+            return "该密钥不存在或不属于该 Session。"
+
+        if session["tokens"][token] is not None:
+            number = session["tokens"][token]
+        else:
+            if not session["available_numbers"]:
+                return "所有数字已分配完毕。"
+            number = random.choice(session["available_numbers"])
+            session["available_numbers"].remove(number)
+            session["tokens"][token] = number
+            save_data(data)
+
+        return render_template("result.html", number=number)
+
+    return render_template("participate.html")
 
 import os
 
