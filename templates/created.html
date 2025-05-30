@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>抽签密钥生成成功</title></head>
+<body>
+    <h2>抽签已生成！Session ID: {{ session_id }}</h2>
+    <p>将以下密钥分发给参与者，每人一个：</p>
+    <ul>
+        {% for token in tokens %}
+        <li>{{ token }}</li>
+        {% endfor %}
+    </ul>
+    <p><a href="/draw">参与者抽签入口</a></p>
+</body>
+</html>
